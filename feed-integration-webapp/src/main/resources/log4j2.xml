@@ -2,8 +2,8 @@
 <configuration status="INFO">
     <appenders>
         <RollingFile name="MyRollingFile"
-                     fileName="/tmp/bahmni-feed-integration-example.log"
-                     filePattern="/tmp/bahmni-feed-integration-example.log.%i">
+                     fileName="/tmp/bahmni-amrit.log"
+                     filePattern="/tmp/bahmni-amrit.log.%i">
             <PatternLayout pattern="%d{dd-MM-yyyy HH:mm:ss} [%-5p] %c{1} - %m%n"/>
             <Policies>
                 <SizeBasedTriggeringPolicy size="10MB"/>
@@ -12,7 +12,7 @@
         </RollingFile>
     </appenders>
     <loggers>
-        <root level="DEBUG">
+        <root level="INFO">
             <appenderref ref="MyRollingFile"/>
         </root>
     </loggers>
