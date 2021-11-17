@@ -21,4 +21,12 @@ public class AmritPatientSearchResult {
     public void setData(List<AmritPatientFR> data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "AmritPatientSearchResult{" +
+                "next='" + next + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

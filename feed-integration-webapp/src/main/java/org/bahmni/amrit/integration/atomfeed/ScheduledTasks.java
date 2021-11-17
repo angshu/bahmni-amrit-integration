@@ -80,7 +80,7 @@ public class ScheduledTasks implements SchedulingConfigurer {
                     feedJob.process();
                 } catch (InterruptedException e) {
                     logger.warn("Thread interrupted for the job: " + quartzCronScheduler.getName());
-                } catch (IOException e) {
+                } catch (IOException | ParseException e) {
                     e.printStackTrace();
                 }
             }

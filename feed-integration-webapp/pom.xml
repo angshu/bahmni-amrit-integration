@@ -71,6 +71,8 @@
     <properties>
         <atomfeed.version>1.9.4</atomfeed.version>
         <hapi-base.version>2.2</hapi-base.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencies>
