@@ -198,4 +198,10 @@
             insert into quartz_cron_scheduler (name, cron_statement, start_delay, enabled) values ('openMRSPatientFeedJob', '0/15 * * * * ?', 0, true);
         </sql>
     </changeSet>
+    <changeSet id="amrit-202111160719" author="Nazeer">
+        <comment>Adding schedulers for amrit patients</comment>
+        <sql>
+            insert into quartz_cron_scheduler (name, cron_statement, start_delay, enabled) values ('amritPatientFeedJob', '0/15 * * * * ?', 0, true);
+        </sql>
+    </changeSet>
 </databaseChangeLog>

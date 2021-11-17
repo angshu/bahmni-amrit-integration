@@ -1,7 +1,7 @@
 package org.bahmni.amrit.integration.services;
 
 import org.bahmni.amrit.integration.atomfeed.OpenMRSMapperBaseTest;
-import org.bahmni.amrit.integration.atomfeed.client.WebClientFactory;
+import org.bahmni.amrit.integration.atomfeed.client.BahmniWebClientFactory;
 import org.bahmni.amrit.integration.atomfeed.contract.encounter.OpenMRSEncounter;
 import org.bahmni.amrit.integration.atomfeed.contract.patient.OpenMRSPatient;
 import org.bahmni.webclients.HttpClient;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-@PrepareForTest(WebClientFactory.class)
+@PrepareForTest(BahmniWebClientFactory.class)
 @RunWith(PowerMockRunner.class)
 @Ignore //TODO, on Java 11 throws exception on relection, invalid access
 public class OpenMRSServiceTest extends OpenMRSMapperBaseTest {
@@ -39,8 +39,8 @@ public class OpenMRSServiceTest extends OpenMRSMapperBaseTest {
 
     @Test
     public void ShouldGetEncounter() throws Exception{
-        PowerMockito.mockStatic(WebClientFactory.class);
-        when(WebClientFactory.getClient()).thenReturn(webClient);
+        PowerMockito.mockStatic(BahmniWebClientFactory.class);
+        when(BahmniWebClientFactory.getClient()).thenReturn(webClient);
         when(webClient.get(new URI("http://localhost:8050/encounter/1"))).thenReturn(new OpenMRSMapperBaseTest().deserialize("/sampleOpenMRSEncounter.json"));
 
         when(webClient.get(any(URI.class))).thenReturn(deserialize("/sampleOpenMRSEncounter.json"));
@@ -53,8 +53,8 @@ public class OpenMRSServiceTest extends OpenMRSMapperBaseTest {
 
     @Test
     public void shouldGetPatient() throws Exception {
-        PowerMockito.mockStatic(WebClientFactory.class);
-        when(WebClientFactory.getClient()).thenReturn(webClient);
+        PowerMockito.mockStatic(BahmniWebClientFactory.class);
+        when(BahmniWebClientFactory.getClient()).thenReturn(webClient);
         String patientUuid = "105059a8-5226-4b1f-b512-0d3ae685287d";
         String identifier = "GAN200053";
         when(webClient.get(new URI("http://localhost:8050/openmrs/ws/rest/v1/patient/" + patientUuid+"?v=full"))).thenReturn(new OpenMRSMapperBaseTest().deserialize("/samplePatient.json"));

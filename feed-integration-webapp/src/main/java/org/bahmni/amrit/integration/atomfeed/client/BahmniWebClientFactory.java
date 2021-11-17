@@ -4,7 +4,7 @@ import org.bahmni.webclients.ConnectionDetails;
 import org.bahmni.webclients.HttpClient;
 import org.bahmni.webclients.openmrs.OpenMRSLoginAuthenticator;
 
-public class WebClientFactory {
+public class BahmniWebClientFactory {
 
     public static HttpClient getClient() {
         ConnectionDetails connectionDetails = org.bahmni.amrit.integration.atomfeed.client.ConnectionDetails.get();

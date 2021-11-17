@@ -16,6 +16,7 @@ import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.scheduling.support.PeriodicTrigger;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
@@ -79,6 +80,8 @@ public class ScheduledTasks implements SchedulingConfigurer {
                     feedJob.process();
                 } catch (InterruptedException e) {
                     logger.warn("Thread interrupted for the job: " + quartzCronScheduler.getName());
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         };

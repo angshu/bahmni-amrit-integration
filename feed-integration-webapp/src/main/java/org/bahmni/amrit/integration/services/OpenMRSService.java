@@ -1,7 +1,7 @@
 package org.bahmni.amrit.integration.services;
 
 import org.bahmni.amrit.integration.atomfeed.client.ConnectionDetails;
-import org.bahmni.amrit.integration.atomfeed.client.WebClientFactory;
+import org.bahmni.amrit.integration.atomfeed.client.BahmniWebClientFactory;
 import org.bahmni.amrit.integration.atomfeed.contract.encounter.OpenMRSEncounter;
 import org.bahmni.amrit.integration.atomfeed.contract.patient.OpenMRSPatient;
 import org.bahmni.amrit.integration.atomfeed.contract.patient.OpenMRSPatientFullRepresentation;
@@ -23,7 +23,7 @@ public class OpenMRSService {
     String patientRestUrl = "/openmrs/ws/rest/v1/patient/";
 
     public OpenMRSEncounter getEncounter(String encounterUrl) throws IOException {
-        HttpClient webClient = WebClientFactory.getClient();
+        HttpClient webClient = BahmniWebClientFactory.getClient();
         String urlPrefix = getURLPrefix();
 
         String encounterJSON = webClient.get(URI.create(urlPrefix + encounterUrl));
@@ -31,7 +31,7 @@ public class OpenMRSService {
     }
 
     public OpenMRSPatient getPatient(String patientUuid) throws IOException, ParseException {
-        HttpClient webClient = WebClientFactory.getClient();
+        HttpClient webClient = BahmniWebClientFactory.getClient();
         String urlPrefix = getURLPrefix();
 
         String patientJSON = webClient.get(URI.create(urlPrefix + patientRestUrl + patientUuid+"?v=full"));
@@ -39,7 +39,7 @@ public class OpenMRSService {
     }
 
     public OpenMRSPatientFullRepresentation getPatientFR(String patientUrl) throws IOException, ParseException {
-        HttpClient webClient = WebClientFactory.getClient();
+        HttpClient webClient = BahmniWebClientFactory.getClient();
         String urlPrefix = getURLPrefix();
         String patientJSON = webClient.get(URI.create(urlPrefix + patientUrl));
         return new OpenMRSPatientMapper().mapFullRepresentation(patientJSON);

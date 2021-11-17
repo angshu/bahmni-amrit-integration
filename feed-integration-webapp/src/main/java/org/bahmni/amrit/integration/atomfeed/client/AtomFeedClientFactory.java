@@ -21,7 +21,7 @@ public class AtomFeedClientFactory {
     private AtomFeedHibernateTransactionManager transactionManager;
 
     public FeedClient get(String feedName, EventWorker encounterFeedWorker) {
-        HttpClient authenticatedWebClient = WebClientFactory.getClient();
+        HttpClient authenticatedWebClient = BahmniWebClientFactory.getClient();
         org.bahmni.webclients.ConnectionDetails connectionDetails = ConnectionDetails.get();
         String authUri = connectionDetails.getAuthUrl();
         ClientCookies cookies = getCookies(authenticatedWebClient, authUri);

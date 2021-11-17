@@ -2,7 +2,7 @@ package org.bahmni.amrit.integration.integrationtest;
 
 import junit.framework.Assert;
 import org.bahmni.amrit.integration.atomfeed.OpenMRSMapperBaseTest;
-import org.bahmni.amrit.integration.atomfeed.client.WebClientFactory;
+import org.bahmni.amrit.integration.atomfeed.client.BahmniWebClientFactory;
 import org.bahmni.amrit.integration.atomfeed.worker.EncounterFeedWorker;
 import org.bahmni.amrit.integration.model.Order;
 import org.bahmni.amrit.integration.repository.OrderRepository;
@@ -30,7 +30,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
         @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, scripts = "classpath:truncateTables.sql")
 
 })
-@PrepareForTest(WebClientFactory.class)
+@PrepareForTest(BahmniWebClientFactory.class)
 public class EncounterFeedWorkerIT extends BaseIntegrationTest {
     @Mock
     private HttpClient webClient;
@@ -43,10 +43,10 @@ public class EncounterFeedWorkerIT extends BaseIntegrationTest {
 
     @Before
     public void setUp() throws Exception {
-        mockStatic(WebClientFactory.class);
+        mockStatic(BahmniWebClientFactory.class);
         initMocks(this);
 
-        when(WebClientFactory.getClient()).thenReturn(webClient);
+        when(BahmniWebClientFactory.getClient()).thenReturn(webClient);
         when(webClient.get(new URI("http://localhost:8050/encounter/1"))).thenReturn(new OpenMRSMapperBaseTest().deserialize("/sampleOpenMRSEncounter.json"));
         when(webClient.get(new URI("http://localhost:8050/openmrs/ws/rest/v1/patient/105059a8-5226-4b1f-b512-0d3ae685287d?v=full"))).thenReturn(new OpenMRSMapperBaseTest().deserialize("/samplePatient.json"));
     }
