@@ -4,9 +4,9 @@ import java.util.List;
 
 public class BahmniPatient {
     private BahmniPerson person;
-    private List<Object> identifiers;
+    private List<BahmniPatientIdentifier> identifiers;
 
-    public BahmniPatient(BahmniPerson person, List<Object> identifiers) {
+    public BahmniPatient(BahmniPerson person, List<BahmniPatientIdentifier> identifiers) {
         this.person = person;
         this.identifiers = identifiers;
     }
@@ -19,11 +19,11 @@ public class BahmniPatient {
         this.person = person;
     }
 
-    public List<Object> getIdentifiers() {
+    public List<BahmniPatientIdentifier> getIdentifiers() {
         return identifiers;
     }
 
-    public void setIdentifiers(List<Object> identifiers) {
+    public void setIdentifiers(List<BahmniPatientIdentifier> identifiers) {
         this.identifiers = identifiers;
     }
 }

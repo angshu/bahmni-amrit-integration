@@ -1,4 +1,4 @@
-# bahmni feed integration example
+# bahmni amrit integration example
 
 
 ## Setup
@@ -8,7 +8,7 @@ You may connect to any database you want and would need to configure properties 
 - Configure AMRIT as identifier in Bahmni. 
     * log onto OpenMRS Admin console 
     * Go to Administration => Manage Identifier Types => Add Patient Identifier Type, 
-here create a patient identifier type of Amirt with 'location behaviour'='Not used' and 'Uniqueness Behaviour'='Unique'
+here create a patient identifier type of Amrit with 'location behaviour'='Not used' and 'Uniqueness Behaviour'='Unique'
     * note down generated UUID (click on Amrit patient identifier in Manage Identifier Types) and update bahmni.amrit.identifierType.uuid in atomfeed.properties file in this application
     * This identifier must also be configured for Bahmni to display and use in search. To do this, go to Administration => Settings => Select Bahmni and edit the property "Extra Patient Identifier Types". 
     Take care of appending to existing values and leave no spaces in betweeen. Eg. uuid1,uuid2
@@ -21,11 +21,21 @@ here create a patient identifier type of Amirt with 'location behaviour'='Not us
 - Identify the person attributes. To do that
     * check the response to https://bahmni-server/openmrs/ws/rest/v1/personattributetype
     * identify the attribute you are interested in. Eg. this application maps the phone to Bahmni Patient's Secondary Contract attribute.
-    * copy the uuid and update "bahmni.attribute.secondaryContact.uuid" in atomfeed.properties (note, this is just example)    
+    * copy the uuid and update "bahmni.attribute.secondaryContact.uuid" in atomfeed.properties (note, this is just example)
+- Setup other configuration
+    *  Check the atomfeed.properties and change accordingly. Change keys like opemrs.*
+ 
+- Setup Amrit System Configuration
+    * Check the atomfeed.properties and set accordingly. E.g "amrit.patient.uri" - E.g. http://localhost:3000/patients
+    * For testing purpose, you can setup a mock http server (e.g. mockoon) serving list of patients from http://localhost:3000/patients
+    * The API (http://localhost:3000/patients) returns the JSON structure as in test/resources/amrit_patients_search_results.json  
+    * if different, then you probably need to change thee model in "AmritPatientSearchResult.java"
+     
+      
 
 #### Pre-requisite
 * mvn 3.6.2. 
-* Java 1.8, works on 11 as well (with some warnings) 
+* Java 1.8, works on 11 as well (with some warnings). You may need to change (or remove) the "maven.compiler.source" properties in the root pom.xml.  
 * download HSQLDB from https://sourceforge.net/projects/hsqldb/files/latest/download (v 2.6.1) and unzip it to a folder.
 The doc here assumes a directory "db" under the project directory
 
