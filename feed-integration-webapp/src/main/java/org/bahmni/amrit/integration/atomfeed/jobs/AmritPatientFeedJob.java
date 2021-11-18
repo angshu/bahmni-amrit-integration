@@ -30,16 +30,19 @@ public class AmritPatientFeedJob implements FeedJob {
     public void process() throws IOException {
         logger.info("Processing amrit patients feed...");
         AmritPatientSearchResult patients = amritHttpClient.getPatients(null);
-        for (AmritPatientFR patient : patients.getData()) {
-            AtomFeedProperties properties = AtomFeedProperties.getInstance();
+        AtomFeedProperties properties = AtomFeedProperties.getInstance();
+        final String amritIdentifierTypeUuid = properties.getProperty("bahmni.amrit.identifierType.uuid");
 
+        for (AmritPatientFR patient : patients.getData()) {
             final String amritId = patient.getAmritId();
-            final String amritIdentifierTypeUuid = properties.getProperty("bahmni.amrit.identifierType.uuid");
             String patientUri = String.format(properties.getProperty("bahmni.patient.search.uri"), amritId);
             System.out.println(patientUri);
 
             boolean patientExists = openMRSService.isPatientExists(patientUri, amritId, amritIdentifierTypeUuid);
             System.out.println(patientExists);
+            if (!patientExists) {
+                openMRSService.createOpenMRSPatient(patient);
+            }
         }
         logger.info("Completed processing feed...");
     }

@@ -5,6 +5,11 @@
 To setup the example app's database, we will use hsqldb, file based and not in-memory.  
 You may connect to any database you want and would need to configure properties and setup accordingly.
 
+- log onto OpenMRS => Administration => Manage Identifier Types => Add Patient Identifier Type, here create a patient identifier type of Amirt with 'location behaviour'='Not used' and 'Uniqueness Behaviour'='Unique'
+- note down generated UUID (click on Amrit patient identifier in Manage Identifier Types) and update bahmni.amrit.identifierType.uuid in atom feed properties file
+- please use below API's to get the uuid's and then update atomfeed.properties file with respective uuid
+- https://origin/openmrs/ws/rest/v1/patientidentifiertype to get identifier type uuid
+- https://origin/openmrs/ws/rest/v1/idgen/identifiertype to get identifier source uuid
 #### Pre-requisite
 * mvn 3.6.2. 
 * Java 1.8, works on 11 as well (with some warnings) 

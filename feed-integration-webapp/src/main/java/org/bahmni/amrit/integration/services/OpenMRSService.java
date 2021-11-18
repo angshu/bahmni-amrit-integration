@@ -1,9 +1,24 @@
 package org.bahmni.amrit.integration.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import org.apache.http.auth.AuthenticationException;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.bahmni.amrit.integration.atomfeed.client.AtomFeedProperties;
 import org.bahmni.amrit.integration.atomfeed.client.BahmniWebClientFactory;
 import org.bahmni.amrit.integration.atomfeed.client.ConnectionDetails;
+import org.bahmni.amrit.integration.atomfeed.contract.bahmni.BahmniPatientFR;
 import org.bahmni.amrit.integration.atomfeed.contract.encounter.OpenMRSEncounter;
+import org.bahmni.amrit.integration.atomfeed.contract.patient.AmritPatientFR;
 import org.bahmni.amrit.integration.atomfeed.contract.patient.OpenMRSPatient;
 import org.bahmni.amrit.integration.atomfeed.contract.patient.OpenMRSPatientFullRepresentation;
 import org.bahmni.amrit.integration.atomfeed.mappers.OpenMRSEncounterMapper;
@@ -13,6 +28,7 @@ import org.bahmni.webclients.ObjectMapperRepository;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -79,4 +95,37 @@ public class OpenMRSService {
         return String.format("%s://%s", openMRSAuthURL.getProtocol(), openMRSAuthURL.getAuthority());
     }
 
+    public void createOpenMRSPatient(AmritPatientFR patient) throws JsonProcessingException {
+        // Amrit => Bahmni
+        BahmniPatientFR newPatient = new OpenMRSPatientMapper().map(patient);
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String patientData = ow.writeValueAsString(newPatient);
+        System.out.println(patientData);
+        // call bahmni core api with new patient data
+        try {
+            AtomFeedProperties properties = AtomFeedProperties.getInstance();
+            String result = createPatientInBahmni(properties, patientData);
+            System.out.println(result);
+        } catch (IOException | AuthenticationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String createPatientInBahmni(AtomFeedProperties properties, String patientData) throws UnsupportedEncodingException, AuthenticationException {
+        String result = "";
+        HttpPost post = new HttpPost(properties.getProperty("bahmnicore.patient.profile"));
+        post.addHeader("content-type", "application/json");
+        post.setEntity(new StringEntity(patientData));
+
+        UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(properties.getProperty("openmrs.user"), properties.getProperty("openmrs.password"));
+        post.addHeader(new BasicScheme().authenticate(credentials, post, null));
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault(); CloseableHttpResponse response = httpClient.execute(post)) {
+            System.out.println(response.getStatusLine().getStatusCode());
+            result = EntityUtils.toString(response.getEntity());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }
