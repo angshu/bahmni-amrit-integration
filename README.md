@@ -5,11 +5,24 @@
 To setup the example app's database, we will use hsqldb, file based and not in-memory.  
 You may connect to any database you want and would need to configure properties and setup accordingly.
 
-- log onto OpenMRS => Administration => Manage Identifier Types => Add Patient Identifier Type, here create a patient identifier type of Amirt with 'location behaviour'='Not used' and 'Uniqueness Behaviour'='Unique'
-- note down generated UUID (click on Amrit patient identifier in Manage Identifier Types) and update bahmni.amrit.identifierType.uuid in atom feed properties file
-- please use below API's to get the uuid's and then update atomfeed.properties file with respective uuid
-- https://origin/openmrs/ws/rest/v1/patientidentifiertype to get identifier type uuid
-- https://origin/openmrs/ws/rest/v1/idgen/identifiertype to get identifier source uuid
+- Configure AMRIT as identifier in Bahmni. 
+    * log onto OpenMRS Admin console 
+    * Go to Administration => Manage Identifier Types => Add Patient Identifier Type, 
+here create a patient identifier type of Amirt with 'location behaviour'='Not used' and 'Uniqueness Behaviour'='Unique'
+    * note down generated UUID (click on Amrit patient identifier in Manage Identifier Types) and update bahmni.amrit.identifierType.uuid in atomfeed.properties file in this application
+    * This identifier must also be configured for Bahmni to display and use in search. To do this, go to Administration => Settings => Select Bahmni and edit the property "Extra Patient Identifier Types". 
+    Take care of appending to existing values and leave no spaces in betweeen. Eg. uuid1,uuid2
+    
+- Identify the main Bahmni identifier details. To do that
+    *   https://bahmni-server/openmrs/ws/rest/v1/idgen/identifiertype to get identifier type uuid - 
+    the one that says "Patient Identifier" is most likely the right one, unless the implementation has overridden the identifier
+    *   While at it, also identify the identifier source for Bahmni's own patient identifier and the associated identifier prefix.
+    * From the above response you can update the following properties in atomfeed.proeprties file - "bahmni.identifierType.uuid", ""bahmni.identifierSource.uuid", "bahmni.identifier.prefix" 
+- Identify the person attributes. To do that
+    * check the response to https://bahmni-server/openmrs/ws/rest/v1/personattributetype
+    * identify the attribute you are interested in. Eg. this application maps the phone to Bahmni Patient's Secondary Contract attribute.
+    * copy the uuid and update "bahmni.attribute.secondaryContact.uuid" in atomfeed.properties (note, this is just example)    
+
 #### Pre-requisite
 * mvn 3.6.2. 
 * Java 1.8, works on 11 as well (with some warnings) 

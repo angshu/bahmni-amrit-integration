@@ -62,7 +62,7 @@ public class OpenMRSPatientMapper {
     }
 
     private BahmniPersonAttribute getSecondaryContactAttribute(AtomFeedProperties properties, AmritPatient amritPatient) {
-        String secondaryContactAttributeUuid = properties.getProperty("bahmni.secondaryContact.attribute.uuid");
+        String secondaryContactAttributeUuid = properties.getProperty("bahmni.attribute.secondaryContact.uuid");
         BahmniAttributeType bahmniSecondaryContactAttributeType = new BahmniAttributeType(secondaryContactAttributeUuid);
         return new BahmniPersonAttribute(bahmniSecondaryContactAttributeType, getMobileNumber(amritPatient));
     }
