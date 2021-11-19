@@ -1,0 +1,42 @@
+{
+  "data": [
+    {
+      "_id": {
+        "$oid": "617a25a59ce46621a4a8592c"
+      },
+      "_class": "com.wipro.fhir.r4.data.patient_data_handler.PatientDemographicModel_NDHM_Patient_Profile",
+      "requestId": "urn:uuid:4ac5aa03-8652-4e0b-9f98-046e9d660260",
+      "timestamp": {
+        "$date": "2021-10-28T04:19:34.000Z"
+      },
+      "healthId": "babaji.007@sbx",
+      "healthIdNumber": "26-5662-6814-4755",
+      "amritId": "AMRIT-9876",
+      "dataType": "Demographic",
+      "profile": {
+        "hipCode": "AMRIT_HIP_CODE",
+        "patient": {
+          "healthId": "babaji.007@sbx",
+          "healthIdNumber": "26-5662-6814-4755",
+          "name": "Test profile last",
+          "gender": "M",
+          "yearOfBirth": "1965",
+          "dayOfBirth": "28",
+          "monthOfBirth": "10",
+          "identifiers": [
+            {
+              "MOBILE": "8197511885"
+            }
+          ],
+          "address": {
+            "line": "add 1 add 2 add 3",
+            "district": "North District",
+            "state": "Sikkim",
+            "pincode": "111111"
+          }
+        }
+      }
+    }
+  ],
+  "next": null
+}
